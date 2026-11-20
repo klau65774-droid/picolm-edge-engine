@@ -1,0 +1,8 @@
+{
+  "binaries": {
+    "baseline": "704937ff2868db21aeab660b579870f0e5db726bd7b6aeb13db9fb7c04d75ab1",
+    "optimized": "3896a9397379c1f0eb2c8983c0d14830b60d606e88aa6908bcf65fa439dc600b",
+    "scalar": "336048dd66dea378b64a244964e891bfc25f8499308924241096abfed4cf9fb6"
+  },
+  "log_sha256": "b9ca443fb5620d16de34c1136c46db0a7a93443ae3b9dd68e8b89ca0a8518270"
+}

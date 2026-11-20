@@ -1,0 +1,4 @@
+repo=https://github.com/RightNow-AI/picolm
+license=MIT
+commit=cf3f2dfca389e4f19a10dd36ce110c41ea12c899
+date=2026-02-23 01:05:30 +0300

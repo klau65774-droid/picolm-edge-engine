@@ -1,0 +1,103 @@
+gcc  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -municode -o picolm_opt.exe src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -static -lpsapi -lm
+
+gcc  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -DPICOLM_SCALAR -fno-tree-vectorize -ffp-contract=off -municode -o picolm_scalar.exe src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -static -lpsapi -lm
+
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_quant.exe tests/test_quant.c src/quant.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -DPICOLM_SCALAR -fno-tree-vectorize -ffp-contract=off -o tests/test_quant_scalar.exe tests/test_quant.c src/quant.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_threadpool.exe tests/test_threadpool.c src/threadpool.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_grammar.exe tests/test_grammar.c src/grammar.c src/tokenizer.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_tokenizer.exe tests/test_tokenizer.c src/tokenizer.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_sampler.exe tests/test_sampler.c src/sampler.c  -static -lpsapi -lm
+gcc  -Isrc -O3 -DNDEBUG -Werror -std=c11 -Wall -Wextra -Wpedantic -D_WIN32_WINNT=0x0600 -march=native -mavx2 -mfma -o tests/test_gguf_fuzz.exe tests/test_gguf_fuzz.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c  -static -lpsapi -lm
+./tests/test_quant.exe
+quant AVX2+FMA: 384 dot comparisons plus 2 independent GGML wire vectors; unit max 1.95391476e-06, long max 1.95322791e-05
+./tests/test_quant_scalar.exe
+quant scalar: 384 dot comparisons plus 2 independent GGML wire vectors; unit max 4.42191958e-06, long max 0.000108888373
+./tests/test_threadpool.exe
+threadpool: 2144 generations across persistent, single and transient modes
+./tests/test_grammar.exe
+grammar: 12 valid, 27 invalid, 11 completions, depth and masking outcomes
+./tests/test_tokenizer.exe
+Tokenizer: invalid vocabulary data or allocation failure
+tokenizer: bounded encode, unknown/byte fallback and 2046 BPE reference comparisons
+./tests/test_sampler.exe
+sampler: 2560 filtered draws and greedy/masked edge cases
+./tests/test_gguf_fuzz.exe
+GGUF: invalid header or unsupported version
+GGUF: tensor data extends beyond the file
+GGUF: invalid header or unsupported version
+GGUF: invalid header or unsupported version
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid header or unsupported version
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: invalid tensor descriptor
+GGUF: invalid tensor descriptor
+GGUF: invalid tensor descriptor
+GGUF: tensor data extends beyond the file
+GGUF: inconsistent vocabulary or special token IDs
+GGUF: unsupported tokenizer (expected llama SentencePiece)
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: unsupported RoPE scaling type
+GGUF: invalid metadata, model dimensions or tensor count
+GGUF: unsupported partial-head RoPE
+GGUF: unsupported RoPE frequency tensor
+Model: dim=32 ffn=64 layers=1 heads=4 kv_heads=4 vocab=8 context=16
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+Model: dim=32 ffn=64 layers=1 heads=4 kv_heads=4 vocab=8 context=16
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+KVCP: invalid or unreadable cache
+Model: dim=32 ffn=64 layers=1 heads=4 kv_heads=4 vocab=8 context=16
+binary validation: 24 GGUF + 18 KVCP rejected; SHA-256, v3 identities and v1/v2 migration passed
+
+build/zig-review-fixes/zig-x86_64-windows-0.15.2/zig.exe cc -target aarch64-linux-gnu  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_POSIX_C_SOURCE=200809L -mcpu=cortex_a53 -o picolm_pi src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -lm -pthread 
+build/zig-review-fixes/zig-x86_64-windows-0.15.2/zig.exe cc -target aarch64-linux-gnu  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_POSIX_C_SOURCE=200809L -mcpu=cortex_a76 -o picolm_pi5 src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -lm -pthread 
+build/zig-review-fixes/zig-x86_64-windows-0.15.2/zig.exe cc -target aarch64-linux-musl  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_POSIX_C_SOURCE=200809L -mcpu=cortex_a53 -o picolm_cross_pi src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -lm -pthread -static
+
+build/zig-review-fixes/zig-x86_64-windows-0.15.2/zig.exe cc -target arm-linux-musleabihf  -Isrc -O3 -Werror -std=c11 -Wall -Wextra -Wpedantic -D_POSIX_C_SOURCE=200809L -mcpu=arm1176jzf_s -marm -mfloat-abi=hard -o picolm_pi_arm32 src/picolm.c src/model.c src/gguf.c src/kvcache.c src/sha256.c src/tensor.c src/threadpool.c src/quant.c src/tokenizer.c src/sampler.c src/grammar.c  -lm -pthread -static
+
+CLI cache: France=Paris, Japan=Tokyo, stale=Tokyo (6/6 prefill), repeat=Tokyo (1/6 prefill)
+
+CLI cache: external SHA-256 reference matched model and payload, context and quant mismatch re-prefilled
+
+CLI cache: upstream v1 uses cold prefill by default, explicit trust reused prefix, both upgraded to v3
+
+CLI cache: absolute Unicode GGUF and KVCP v3 paths passed
+
+CLI JSON with no legal candidate: grammar_no_candidate, exit 1, empty stdout
+
+Make: changed flags and compiler triggered build, failed compiler preserved previous command and executable, dry run wrote no staging file
+
+Benchmark provenance: rejects modified log, mismatched scalar binary and mid-run input drift
+
+ARM ELF verified: pi and pi5 AArch64 dynamic, cross-pi AArch64 static, pi-arm32 ARM EABI hard-float static
+
+BPE 1024 bytes, median of 3: 22.6 ms -> 18.6 ms
+
+BPE 8192 bytes, median of 3: 216.0 ms -> 20.7 ms
+
+BPE 32768 bytes, median of 3: 3139.2 ms -> 22.5 ms
+
+Optimized JSONSchemaBench: 50/50 valid, endings {'budget': 30, 'grammar_complete': 20}, suffix 30
